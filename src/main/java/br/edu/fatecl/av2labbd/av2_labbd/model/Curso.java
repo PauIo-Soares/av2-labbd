@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Table(name = "tb_categorias_mensagem")
+@Table(name = "tb_cursos")
 @Data
-public class CategoriaMensagem {
+public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,5 +14,4 @@ public class CategoriaMensagem {
 
     @Column(nullable = false)
     private String nome;
-
 }

@@ -14,6 +14,10 @@ public class Candidato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "curso_interesse_id", nullable = false)
+    private Curso cursoInteresse;
+
     @Column(nullable = false)
     private String nome;
 
@@ -26,10 +30,7 @@ public class Candidato {
     @Column(nullable = false)
     private String bairro;
 
-    @Column(nullable = false)
-    private String cursoInteresse;
-
-    @Column(nullable = false)
+    @Column(name = "data_cadastro", nullable = false)
     private LocalDate dataCadastro;
 
 }

@@ -6,15 +6,19 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tb_candidatos")
+@Table(name = "tb_historico_curiosidade")
 @Data
-public class HistoricoExibicao {
+public class HistoricoCuriosidade {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "curiosidade_id", nullable = false)
+    private Curiosidade curiosidade;
+
+    @Column(name = "data_hora_exibicao", nullable = false)
     private LocalDate dataHoraExibicao;
 
 }
