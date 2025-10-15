@@ -1,22 +1,66 @@
 USE db_av2
+Go
+
+CREATE FUNCTION fn_QtdCuriosidadesPorTime (@timeid BIGINT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @qtd INT;
+
+    SELECT @qtd = COUNT(*)
+    FROM tb_historico_curiosidade hist
+    INNER JOIN tb_curiosidades cr ON hist.curiosidade_id = cr.id
+    WHERE cr.time_id = @timeid;
+
+    RETURN ISNULL(@qtd, 0);
+END
 GO
+
+CREATE PROCEDURE sp_valorAleatorio(@timeid bigint)
+AS
+   SELECT TOP 1 mensagem
+   FROM tb_curiosidades
+   where time_id = @timeid
+   ORDER BY NEWID()
+GO
+
+
+Create trigger t_insereHist on tb_curiosidades
+FOR INSERT
+AS
+BEGIN
+
+END
+Go
 
 Create trigger t_modificaUltimaHist on tb_historico_curiosidade
 For INSERT
 AS
 BEGIN
-	DECLARE @qtdCuriosidades INT, @maiorID int
-	Declare @id bigint, @datahora date, @curiosidadeID bigint
+	DECLARE @timeid bigint, @qtdCuriosidadeTime INT, @idAntigo bigint
+	Declare @id bigint, @datahora datetime, @curiosidadeID bigint
 
-	SELECT @qtdCuriosidades =  COUNT(*) from tb_historico_curiosidade
-	IF (@qtdCuriosidades > 12)
+	--SELECT @qtdCuriosidades =  COUNT(*) from tb_historico_curiosidade
+
+	Select @id = id, @datahora = data_hora_exibicao, @curiosidadeID = curiosidade_id from inserted
+	SELECT @timeid = c.time_id FROM tb_curiosidades c WHERE c.id = @curiosidadeID;
+
+	SELECT @qtdCuriosidadeTime = dbo.fn_QtdCuriosidadesPorTime(@timeid)
+
+	IF (@qtdCuriosidadeTime > 3)
 	BEGIN
-		SELECT @maiorID = MAX(id) from tb_historico_curiosidade
-		Select @id = id, @datahora = data_hora_exibicao, @curiosidadeID = curiosidade_id from inserted
-
+		SELECT TOP 1 @idAntigo = hist.id
+		from tb_historico_curiosidade hist
+		INNER JOIN tb_curiosidades cr ON hist.curiosidade_id = cr.id
+		where cr.time_id = @timeid
+		ORDER BY hist.data_hora_exibicao ASC
+		
 		UPDATE tb_historico_curiosidade
 		SET id = @id, data_hora_exibicao = @datahora, curiosidade_id = @curiosidadeID
-		where id = @maiorID
+		where id = @idAntigo
+
+		DELETE FROM tb_historico_curiosidade
+		WHERE id IN (Select id from inserted)
 	END
 END
 GO
