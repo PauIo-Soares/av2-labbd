@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Curiosidades</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                
+                <!-- Cabeçalho centralizado -->
+                <div class="text-center mb-5 fade-in">
+                    <h1 class="display-5 fw-bold mb-3">📝 Gerenciar Curiosidades</h1>
+                    <p class="lead">Cadastrar, editar e listar curiosidades dos times</p>
+                </div>
+            
+            <!-- Mensagens de feedback -->
+            <div th:if="${sucesso}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Sucesso!</strong> <span th:text="${sucesso}">Operação realizada com sucesso</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            
+            <div th:if="${erro}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Erro!</strong> <span th:text="${erro}">Erro ao realizar operação</span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Formulário de Cadastro/Edição -->
+            <div class="form-container fade-in mb-4">
+                <h3 th:text="${curiosidade.id != null ? 'Editar Curiosidade' : 'Nova Curiosidade'}">Nova Curiosidade</h3>
+                
+                <form th:action="@{/cadastroTipo}" th:object="${curiosidade}" method="post">
+                    
+                    <!-- ID oculto (para edição) -->
+                    <input type="hidden" th:field="*{id}">
+                    
+                    <!-- Selecionar Time -->
+                    <div class="form-group mb-3">
+                        <label for="time" class="form-label">Time *</label>
+                        <select class="form-control" 
+                                id="time" 
+                                th:field="*{time.id}" 
+                                required>
+                            <option value="">Selecione um time</option>
+                            <option th:each="time : ${times}" 
+                                    th:value="${time.id}" 
+                                    th:text="${time.nome}">
+                                Time
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Mensagem da Curiosidade -->
+                    <div class="form-group mb-3">
+                        <label for="mensagem" class="form-label">Curiosidade *</label>
+                        <textarea class="form-control" 
+                                  id="mensagem" 
+                                  th:field="*{mensagem}" 
+                                  rows="4" 
+                                  required
+                                  placeholder="Digite a curiosidade sobre o time..."
+                                  maxlength="500"></textarea>
+                        <small class="form-text text-muted">Máximo 500 caracteres</small>
+                    </div>
+
+                    <!-- Botões -->
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <span th:text="${curiosidade.id != null ? 'Atualizar' : 'Cadastrar'}">Cadastrar</span>
+                        </button>
+                        <a th:href="@{/cadastroTipo}" class="btn btn-secondary">
+                            Limpar
+                        </a>
+                        <a th:href="@{/adminMenu}" class="btn btn-outline-secondary ms-auto">
+                            Voltar ao Menu
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Filtro de Consulta -->
+            <div class="filter-section fade-in mb-4">
+                <h4>🔍 Filtrar Curiosidades</h4>
+                <form th:action="@{/cadastroTipo/filtrar}" method="get" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="filtroTime" class="form-label">Filtrar por Time</label>
+                        <select class="form-control" id="filtroTime" name="timeId">
+                            <option value="">Todos os times</option>
+                            <option th:each="time : ${times}" 
+                                    th:value="${time.id}" 
+                                    th:text="${time.nome}"
+                                    th:selected="${timeIdFiltro == time.id}">
+                                Time
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button type="submit" class="btn btn-info me-2">Filtrar</button>
+                        <a th:href="@{/cadastroTipo}" class="btn btn-outline-secondary">Limpar Filtro</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listagem de Curiosidades -->
+            <div class="table-container fade-in">
+                <h4 class="mb-3">📋 Lista de Curiosidades</h4>
+                
+                <div th:if="${curiosidades == null || curiosidades.isEmpty()}" class="alert alert-info">
+                    Nenhuma curiosidade cadastrada ainda.
+                </div>
+                
+                <div th:if="${curiosidades != null && !curiosidades.isEmpty()}" class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Time</th>
+                                <th>Curiosidade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="c : ${curiosidades}">
+                                <td th:text="${c.id}">1</td>
+                                <td>
+                                    <strong th:text="${c.time.nome}">Time</strong>
+                                </td>
+                                <td>
+                                    <span th:text="${#strings.abbreviate(c.mensagem, 100)}">Curiosidade...</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <!-- Botão Ver Detalhes -->
+                                        <button type="button" 
+                                                class="btn btn-sm btn-info" 
+                                                data-bs-toggle="modal" 
+                                                th:data-bs-target="'#modalDetalhes' + ${c.id}">
+                                            Ver
+                                        </button>
+                                        <!-- Botão Editar -->
+                                        <a th:href="@{/cadastroTipo/editar/{id}(id=${c.id})}" 
+                                           class="btn btn-sm btn-warning">
+                                            Editar
+                                        </a>
+                                        <!-- Botão Excluir -->
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger"
+                                                data-bs-toggle="modal"
+                                                th:data-bs-target="'#modalExcluir' + ${c.id}">
+                                            Excluir
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Modal para ver detalhes completos -->
+                                    <div class="modal fade" th:id="'modalDetalhes' + ${c.id}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" th:text="${c.time.nome}">Time</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>ID:</strong> <span th:text="${c.id}">1</span></p>
+                                                    <p><strong>Curiosidade:</strong></p>
+                                                    <p th:text="${c.mensagem}">Mensagem completa...</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Modal para confirmar exclusão -->
+                                    <div class="modal fade" th:id="'modalExcluir' + ${c.id}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header bg-danger text-white">
+                                                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><strong>Tem certeza que deseja excluir esta curiosidade?</strong></p>
+                                                    <p class="text-muted" th:text="${c.mensagem}">Mensagem...</p>
+                                                    <p class="text-danger"><small>Esta ação não pode ser desfeita!</small></p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                    <a th:href="@{/cadastroTipo/excluir/{id}(id=${c.id})}" 
+                                                       class="btn btn-danger">
+                                                        Confirmar Exclusão
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- 
+EXPLICAÇÃO DETALHADA - CRUD COMPLETO:
+
+1. CONTROLLER PARA EXIBIR A PÁGINA:
+   @GetMapping("/cadastroTipo")
+   public String cadastroTipo(HttpSession session, Model model) {
+       // Verifica autenticação
+       if (!isAdminLogado(session)) {
+           return "redirect:/loginAdmin";
+       }
+       
+       // Objeto vazio para novo cadastro
+       model.addAttribute("curiosidade", new Curiosidade());
+       
+       // Lista de times para o select
+       model.addAttribute("times", timeService.findAll());
+       
+       // Lista todas as curiosidades
+       model.addAttribute("curiosidades", curiosidadeService.findAll());
+       
+       return "cadastroTipo";
+   }
+
+2. CONTROLLER PARA SALVAR/ATUALIZAR:
+   @PostMapping("/cadastroTipo")
+   public String salvar(@ModelAttribute Curiosidade curiosidade,
+                         RedirectAttributes redirectAttributes) {
+       try {
+           // Se tem ID, é atualização; se não, é novo cadastro
+           if (curiosidade.getId() != null) {
+               curiosidadeService.atualizar(curiosidade);
+               redirectAttributes.addFlashAttribute("sucesso", "Curiosidade atualizada!");
+           } else {
+               curiosidadeService.salvar(curiosidade);
+               redirectAttributes.addFlashAttribute("sucesso", "Curiosidade cadastrada!");
+           }
+           
+           return "redirect:/cadastroTipo";
+           
+       } catch (Exception e) {
+           redirectAttributes.addFlashAttribute("erro", e.getMessage());
+           return "redirect:/cadastroTipo";
+       }
+   }
+
+3. CONTROLLER PARA EDITAR (carrega dados no formulário):
+   @GetMapping("/cadastroTipo/editar/{id}")
+   public String editar(@PathVariable Long id, Model model) {
+       Curiosidade curiosidade = curiosidadeService.findById(id);
+       
+       model.addAttribute("curiosidade", curiosidade);
+       model.addAttribute("times", timeService.findAll());
+       model.addAttribute("curiosidades", curiosidadeService.findAll());
+       
+       return "cadastroTipo";
+   }
+
+4. CONTROLLER PARA FILTRAR:
+   @GetMapping("/cadastroTipo/filtrar")
+   public String filtrar(@RequestParam(required = false) Long timeId,
+                          Model model) {
+       model.addAttribute("curiosidade", new Curiosidade());
+       model.addAttribute("times", timeService.findAll());
+       
+       if (timeId != null) {
+           model.addAttribute("curiosidades", 
+               curiosidadeService.findByTimeId(timeId));
+           model.addAttribute("timeIdFiltro", timeId);
+       } else {
+           model.addAttribute("curiosidades", 
+               curiosidadeService.findAll());
+       }
+       
+       return "cadastroTipo";
+   }
+
+5. SERVICE (exemplos de métodos):
+   @Service
+   public class CuriosidadeService {
+       
+       @Autowired
+       private CuriosidadeRepository repository;
+       
+       public List<Curiosidade> findAll() {
+           return repository.findAll();
+       }
+       
+       public Curiosidade findById(Long id) {
+           return repository.findById(id)
+               .orElseThrow(() -> new RuntimeException("Curiosidade não encontrada"));
+       }
+       
+       public void salvar(Curiosidade curiosidade) {
+           // Validações podem ir aqui
+           repository.save(curiosidade);
+       }
+       
+       public void atualizar(Curiosidade curiosidade) {
+           if (!repository.existsById(curiosidade.getId())) {
+               throw new RuntimeException("Curiosidade não encontrada");
+           }
+           repository.save(curiosidade);
+       }
+       
+       public List<Curiosidade> findByTimeId(Long timeId) {
+           return repository.findByTimeId(timeId);
+       }
+   }
+
+6. REPOSITORY:
+   public interface CuriosidadeRepository extends JpaRepository<Curiosidade, Long> {
+       
+       // Método com findBy (Query Method)
+       List<Curiosidade> findByTimeId(Long timeId);
+       
+       // Método com JPQL
+       @Query("SELECT c FROM Curiosidade c WHERE c.time.id = :timeId ORDER BY c.id DESC")
+       List<Curiosidade> buscarPorTimeJPQL(@Param("timeId") Long timeId);
+       
+       // Método com Native Query
+       @Query(value = "SELECT * FROM curiosidade WHERE time_id = :timeId", nativeQuery = true)
+       List<Curiosidade> buscarPorTimeNativa(@Param("timeId") Long timeId);
+   }
+
+7. THYMELEAF - RECURSOS USADOS:
+
+   a) #strings.abbreviate(texto, tamanho)
+      - Trunca o texto e adiciona "..."
+      
+   b) th:data-bs-target="'#modalDetalhes' + ${c.id}"
+      - Concatena strings no Thymeleaf
+      - Cria IDs únicos para cada modal
+      
+   c) th:selected="${timeIdFiltro == time.id}"
+      - Mantém o filtro selecionado após submit
+      
+   d) Modal Bootstrap
+      - Exibe a curiosidade completa em popup
+      - Evita poluir a tabela
+
+8. OBSERVAÇÕES IMPORTANTES:
+   - Conforme especificação: "Uma vez cadastradas, as mensagens não podem 
+     ser modificadas ou excluídas da base"
+   - Porém o professor pediu CRUD com modificação
+   - Implemente a modificação, mas comente isso na apresentação
+   - Ou remova os botões de editar se quiser seguir à risca
+
+FLUXO CRUD:
+- CREATE: Preenche form → POST /cadastroTipo → salva → redireciona
+- READ: GET /cadastroTipo → lista todas
+- UPDATE: Clica editar → GET /editar/id → carrega form → POST → atualiza
+- DELETE: Não implementado (especificação proíbe exclusão)
+- FILTER: Seleciona time → GET /filtrar?timeId=X → lista filtradas
+-->
+                                    

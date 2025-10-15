@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curiosidade</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-lg-8 col-xl-7">
+                
+                <!-- Card de curiosidade centralizado -->
+                <div class="curiosidade-card-centered fade-in">
+                    
+                    <!-- Título -->
+                    <div class="text-center mb-4">
+                        <h1 class="display-4 fw-bold mb-3">🎯 Curiosidade</h1>
+                        <p class="lead fs-4 text-muted">Você sabia?</p>
+                    </div>
+
+                    <!-- Curiosidade -->
+                    <div class="curiosidade-content">
+                        <div class="curiosidade-text">
+                            <p th:text="${curiosidade}">
+                                Aqui aparece a curiosidade do time escolhido...
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="my-5">
+
+                    <!-- Timer -->
+                    <div class="timer-section text-center">
+                        <p class="lead mb-3">Redirecionamento automático em:</p>
+                        <div class="timer-display" id="timer">15</div>
+                        <p class="text-muted mt-2">segundos</p>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:inline="javascript">
+        // Contagem regressiva de 15 segundos
+        let segundos = 15;
+        const timerElement = document.getElementById('timer');
+        
+        const countdown = setInterval(function() {
+            segundos--;
+            timerElement.textContent = segundos;
+            
+            if (segundos <= 0) {
+                clearInterval(countdown);
+                window.location.href = /*[[@{/cadastroCandidato}]]*/ '/cadastroCandidato';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

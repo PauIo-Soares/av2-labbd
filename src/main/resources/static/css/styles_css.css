@@ -1,0 +1,594 @@
+/* src/main/resources/static/css/styles.css */
+
+/* ==================== VARIÁVEIS ==================== */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --dark-color: #212529;
+    --light-bg: #f8f9fa;
+}
+
+/* ==================== RESET E GLOBAL ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    min-height: 100vh;
+}
+
+/* ==================== INDEX PAGE ==================== */
+.index-page {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    z-index: 0;
+}
+
+/* Para usar imagem de fundo (descomente no HTML se quiser) */
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    filter: brightness(0.7);
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-card {
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-header h1 {
+    color: var(--dark-color);
+}
+
+.welcome-header .lead {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.welcome-header .subtitle {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.football-images .image-box {
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.football-images .image-box:hover {
+    transform: scale(1.05);
+}
+
+.football-images .image-box img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.welcome-action h3 {
+    color: var(--dark-color);
+    font-weight: 700;
+}
+
+.admin-link {
+    transition: color 0.3s ease;
+}
+
+.admin-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* ==================== ESCOLHA TIME (HORIZONTAL) ==================== */
+.times-horizontal {
+    padding: 0 20px;
+}
+
+.time-card-vertical {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.time-card-vertical:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.time-image-container {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+
+.time-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.time-card-vertical:hover .time-image {
+    transform: scale(1.1);
+}
+
+.time-info {
+    padding: 25px;
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.time-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.time-subtitle {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
+
+.btn-escolher {
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+/* ==================== CURIOSIDADE CENTRALIZADA ==================== */
+.curiosidade-card-centered {
+    background: white;
+    border-radius: 20px;
+    padding: 60px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.curiosidade-content {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
+    padding: 40px;
+    margin: 30px 0;
+}
+
+.curiosidade-text p {
+    font-size: 1.4rem;
+    line-height: 1.9;
+    color: var(--dark-color);
+    font-style: italic;
+    margin: 0;
+}
+
+.timer-section {
+    margin-top: 40px;
+}
+
+.timer-section .lead {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.timer-display {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ==================== FORMULÁRIOS ==================== */
+.form-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
+    padding: 12px 15px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+    outline: none;
+}
+
+.form-control:hover {
+    border-color: #c0c0c0;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-check-input {
+    border-radius: 5px;
+    border: 2px solid #e0e0e0;
+    width: 1.2em;
+    height: 1.2em;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* ==================== BOTÕES ==================== */
+.btn {
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #63408a 100%);
+}
+
+.btn-lg {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+}
+
+/* ==================== ALERTAS ==================== */
+.alert {
+    border-radius: 12px;
+    border: none;
+    padding: 18px 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    color: #721c24;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    color: #0c5460;
+}
+
+/* ==================== ADMIN MENU SIMPLIFICADO ==================== */
+.admin-menu-simple {
+    padding: 40px 0;
+}
+
+.menu-card-simple {
+    display: block;
+    background: white;
+    border-radius: 20px;
+    padding: 60px 40px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--dark-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    height: 100%;
+}
+
+.menu-card-simple:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    color: var(--primary-color);
+}
+
+.menu-icon {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    transition: transform 0.3s ease;
+}
+
+.menu-card-simple:hover .menu-icon {
+    transform: scale(1.1);
+}
+
+.menu-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ==================== TABELAS ==================== */
+.table-container {
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    overflow-x: auto;
+    margin-top: 30px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.table thead th {
+    border: none;
+    padding: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+.table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* ==================== FILTROS ==================== */
+.filter-section {
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.filter-section h4 {
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.filter-buttons .btn {
+    flex: 0 0 auto;
+}
+
+/* ==================== CARDS ==================== */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card h6 {
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+/* ==================== BADGES ==================== */
+.badge {
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* ==================== MODAIS ==================== */
+.modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom: none;
+    padding: 25px 30px;
+}
+
+.modal-body {
+    padding: 30px;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 20px 30px 30px;
+}
+
+/* ==================== ANIMAÇÕES ==================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* ==================== RESPONSIVIDADE ==================== */
+@media (max-width: 768px) {
+    .welcome-card {
+        padding: 30px 20px;
+    }
+    
+    .curiosidade-card-centered {
+        padding: 30px 20px;
+    }
+    
+    .curiosidade-text p {
+        font-size: 1.1rem;
+    }
+    
+    .timer-display {
+        font-size: 3.5rem;
+    }
+    
+    .time-image-container {
+        height: 250px;
+    }
+    
+    .time-name {
+        font-size: 1.4rem;
+    }
+    
+    .form-container {
+        padding: 25px 20px;
+    }
+    
+    .table-container {
+        padding: 20px;
+    }
+    
+    .filter-section {
+        padding: 20px;
+    }
+    
+    .menu-card-simple {
+        padding: 40px 25px;
+    }
+    
+    .menu-title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-5 {
+        font-size: 1.8rem;
+    }
+    
+    .football-images .image-box img {
+        height: 120px;
+    }
+}
+
+/* ==================== UTILITÁRIOS ==================== */
+.text-decoration-none:hover {
+    text-decoration: none !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Espaçamento consistente */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+/* Scroll suave */
+html {
+    scroll-behavior: smooth;
+}

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Candidatos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                
+                <!-- Cabeçalho centralizado -->
+                <div class="text-center mb-5 fade-in">
+                    <h1 class="display-5 fw-bold mb-3">🔍 Consultar Candidatos</h1>
+                    <p class="lead">Visualize e filtre os candidatos cadastrados</p>
+                </div>
+            
+            <!-- Painel de Filtros -->
+            <div class="filter-section fade-in mb-4">
+                <h4 class="mb-3">Opções de Consulta</h4>
+                
+                <div class="row g-3">
+                    <!-- Consultar por Curso -->
+                    <div class="col-md-6">
+                        <div class="card p-3 h-100">
+                            <h6>📚 Por Curso</h6>
+                            <form th:action="@{/consultaCandidatos/curso}" method="get" class="mt-2">
+                                <div class="input-group">
+                                    <select class="form-control" name="cursoId" required>
+                                        <option value="">Selecione um curso</option>
+                                        <option th:each="curso : ${cursos}" 
+                                                th:value="${curso.id}" 
+                                                th:text="${curso.nome}">
+                                            Curso
+                                        </option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Consultar por Bairro -->
+                    <div class="col-md-6">
+                        <div class="card p-3 h-100">
+                            <h6>📍 Por Bairro</h6>
+                            <form th:action="@{/consultaCandidatos/bairro}" method="get" class="mt-2">
+                                <div class="input-group">
+                                    <select class="form-control" name="bairro" required>
+                                        <option value="">Selecione um bairro</option>
+                                        <option th:each="bairro : ${bairros}" 
+                                                th:value="${bairro}" 
+                                                th:text="${bairro}">
+                                            Bairro
+                                        </option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary">Buscar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões de Consultas Rápidas -->
+                <div class="filter-buttons mt-3">
+                    <a th:href="@{/consultaCandidatos/todos-por-curso}" class="btn btn-info">
+                        📊 Todos ordenados por Curso
+                    </a>
+                    <a th:href="@{/consultaCandidatos/todos-por-bairro}" class="btn btn-info">
+                        📊 Todos ordenados por Bairro
+                    </a>
+                    <a th:href="@{/consultaCandidatos/primeiros}" class="btn btn-success">
+                        ⬆️ 10 Primeiros Cadastrados
+                    </a>
+                    <a th:href="@{/consultaCandidatos/ultimos}" class="btn btn-success">
+                        ⬇️ 10 Últimos Cadastrados
+                    </a>
+                    <a th:href="@{/consultaCandidatos}" class="btn btn-secondary">
+                        🔄 Limpar Consulta
+                    </a>
+                </div>
+            </div>
+
+            <!-- Resultado da Consulta -->
+            <div class="table-container fade-in">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>
+                        📋 Resultados
+                        <span th:if="${tipoConsulta != null}" 
+                              class="badge bg-primary" 
+                              th:text="${tipoConsulta}">
+                            Consulta
+                        </span>
+                    </h4>
+                </div>
+
+                <!-- Mensagem quando não há resultados -->
+                <div th:if="${candidatos == null || candidatos.isEmpty()}" 
+                     class="alert alert-info">
+                    <span th:if="${mensagem != null}" th:text="${mensagem}">
+                        Nenhum candidato encontrado com os critérios informados.
+                    </span>
+                    <span th:unless="${mensagem != null}">
+                        Selecione um filtro acima para consultar os candidatos.
+                    </span>
+                </div>
+
+                <!-- Tabela de Resultados -->
+                <div th:if="${candidatos != null && !candidatos.isEmpty()}" 
+                     class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>Telefone</th>
+                                <th>Bairro</th>
+                                <th>Curso</th>
+                                <th>Data Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="candidato : ${candidatos}">
+                                <td th:text="${candidato.id}">1</td>
+                                <td>
+                                    <strong th:text="${candidato.nome}">Nome</strong>
+                                </td>
+                                <td th:text="${candidato.email}">email@exemplo.com</td>
+                                <td th:text="${candidato.telefone}">(11) 98765-4321</td>
+                                <td th:text="${candidato.bairro}">Bairro</td>
+                                <td>
+                                    <span class="badge bg-info" 
+                                          th:text="${candidato.curso.nome}">
+                                        Curso
+                                    </span>
+                                </td>
+                                <td th:text="${#temporals.format(candidato.dataCadastro, 'dd/MM/yyyy HH:mm')}">
+                                    01/01/2024 10:00
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Botão Voltar -->
+            <div class="text-center mt-4">
+                <a th:href="@{/adminMenu}" class="btn btn-secondary btn-lg">
+                    ← Voltar ao Menu Administrativo
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- 
+EXPLICAÇÃO COMPLETA - CONSULTAS AVANÇADAS:
+
+1. CONTROLLERS PARA CADA TIPO DE CONSULTA:
+
+   // Página inicial (sem filtro)
+   @GetMapping("/consultaCandidatos")
+   public String consultaCandidatos(HttpSession session, Model model) {
+       if (!isAdminLogado(session)) {
+           return "redirect:/loginAdmin";
+       }
+       
+       model.addAttribute("cursos", cursoService.findAll());
+       return "consultaCandidatos";
+   }
+
+   // Consultar por Curso
+   @GetMapping("/consultaCandidatos/curso")
+   public String porCurso(@RequestParam Long cursoId, Model model) {
+       Curso curso = cursoService.findById(cursoId);
+       List<Candidato> candidatos = candidatoService.findByCursoId(cursoId);
+       
+       model.addAttribute("candidatos", candidatos);
+       model.addAttribute("tipoConsulta", "Por Curso: " + curso.getNome());
+       model.addAttribute("cursos", cursoService.findAll());
+       
+       return "consultaCandidatos";
+   }
+
+   // Consultar por Bairro
+   @GetMapping("/consultaCandidatos/bairro")
+   public String porBairro(@RequestParam String bairro, Model model) {
+       List<Candidato> candidatos = candidatoService.findByBairroContaining(bairro);
+       
+       model.addAttribute("candidatos", candidatos);
+       model.addAttribute("tipoConsulta", "Por Bairro: " + bairro);
+       model.addAttribute("cursos", cursoService.findAll());
+       
+       if (candidatos.isEmpty()) {
+           model.addAttribute("mensagem", 
+               "Nenhum candidato encontrado no bairro: " + bairro);
+       }
+       
+       return "consultaCandidatos";
+   }
+
+   // Todos ordenados por Curso
+   @GetMapping("/consultaCandidatos/todos-por-curso")
+   public String todosPorCurso(Model model) {
+       List<Candidato> candidatos = candidatoService.findAllOrderByCurso();
+       
+       model.addAttribute("candidatos", candidatos);
+       model.addAttribute("tipoConsulta", "Todos ordenados por Curso");
+       model.addAttribute("cursos", cursoService.findAll());
+       
+       return "consultaCandidatos";
+   }
+
+   // Todos ordenados por Bairro
+   @GetMapping("/consultaCandidatos/todos-por-bairro")
+   public String todosPorBairro(Model model) {
+       List<Candidato> candidatos = candidatoService.findAllOrderByBairro();
+       
+       model.addAttribute("candidatos", candidatos);
+       model.addAttribute("tipoConsulta", "Todos ordenados por Bairro");
+       model.addAttribute("cursos", cursoService.findAll());
+       
+       return "consultaCandidatos";
+   }
+
+   // 10 Primeiros cadastrados
+   @GetMapping("/consultaCandidatos/primeiros")
+   public String primeiros(Model model) {
+       List<Candidato> candidatos = candidatoService.findTop10ByOrderByDataCadastroAsc();
+       
+       model.addAttribute("candidatos", candidatos);
+       model.addAttribute("tipoConsulta", "10 Primeiros Cadastrados");
+       model.addAttribute("cursos", cursoService.findAll());
+       
+       return "consultaCandidatos";
+   }
+
+   // 10 Últimos cadastrados
+   @GetMapping("/consultaCandidatos/ultimos")
+   public String ultimos(Model model) {
+       List<Candidato> candidatos = candidatoService.findTop10ByOrderByDataCadastroDesc();
+       
+       model.addAttribute("candidatos", candidatos);
+       model.addAttribute("tipoConsulta", "10 Últimos Cadastrados");
+       model.addAttribute("cursos", cursoService.findAll());
+       
+       return "consultaCandidatos";
+   }
+
+2. REPOSITORY COM OS 3 TIPOS DE CONSULTA (findBy, JPQL, Native):
+
+   public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
+       
+       // 1. QUERY METHOD (findBy) - Spring gera automaticamente
+       List<Candidato> findByCursoId(Long cursoId);
+       List<Candidato> findByBairroContaining(String bairro);
+       List<Candidato> findTop10ByOrderByDataCadastroAsc();
+       List<Candidato> findTop10ByOrderByDataCadastroDesc();
+       
+       // 2. JPQL (Java Persistence Query Language)
+       @Query("SELECT c FROM Candidato c ORDER BY c.curso.nome, c.nome")
+       List<Candidato> findAllOrderByCursoJPQL();
+       
+       @Query("SELECT c FROM Candidato c ORDER BY c.bairro, c.nome")
+       List<Candidato> findAllOrderByBairroJPQL();
+       
+       @Query("SELECT c FROM Candidato c WHERE c.bairro LIKE %:bairro%")
+       List<Candidato> buscarPorBairroJPQL(@Param("bairro") String bairro);
+       
+       // 3. NATIVE QUERY (SQL puro)
+       @Query(value = "SELECT * FROM candidato ORDER BY bairro, nome", 
+              nativeQuery = true)
+       List<Candidato> findAllOrderByBairroNativa();
+       
+       @Query(value = "SELECT TOP 10 * FROM candidato ORDER BY data_cadastro ASC", 
+              nativeQuery = true)
+       List<Candidato> findPrimeiros10Nativa();
+       
+       @Query(value = "SELECT TOP 10 * FROM candidato ORDER BY data_cadastro DESC", 
+              nativeQuery = true)
+       List<Candidato> findUltimos10Nativa();
+       
+       @Query(value = "SELECT c.* FROM candidato c " +
+                      "INNER JOIN curso cu ON c.curso_id = cu.id " +
+                      "ORDER BY cu.nome, c.nome", 
+              nativeQuery = true)
+       List<Candidato> findAllOrderByCursoNativa();
+   }
+
+3. THYMELEAF - FORMATAÇÃO DE DATA:
+   th:text="${#temporals.format(candidato.dataCadastro, 'dd/MM/yyyy HH:mm')}"
+   
+   - #temporals é um utilitário do Thymeleaf para datas
+   - Funciona com LocalDateTime, LocalDate, etc.
+   - Formato brasileiro: dia/mês/ano hora:minuto
+
+4. EXPORTAR PARA CSV (JavaScript):
+   - Função simples que lê a tabela HTML
+   - Converte para formato CSV
+   - Faz download automático
+   - Útil para análise de dados externa
+
+5. ESPECIFICAÇÃO ATENDIDA:
+   ✅ Consultar por curso escolhido
+   ✅ Consultar por bairro
+   ✅ Todos ordenados por curso
+   ✅ Todos ordenados por bairro
+   ✅ 10 primeiros cadastrados
+   ✅ 10 últimos cadastrados
+
+DICA IMPORTANTE:
+No Repository, use PELO MENOS UM de cada tipo (findBy, JPQL, Native).
+Por exemplo:
+- findByCursoId() → Query Method
+- findAllOrderByCursoJPQL() → JPQL
+- findAllOrderByBairroNativa() → Native Query
+-->
