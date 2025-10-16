@@ -23,4 +23,5 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
     @Query("Select c from Candidato c ORDER BY c.bairro ASC")
     List<Candidato> listaTodosPorBairro();
+
 }
