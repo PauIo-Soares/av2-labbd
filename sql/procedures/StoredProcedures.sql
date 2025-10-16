@@ -16,7 +16,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_valorAleatorio(@timeid bigint)
+CREATE PROCEDURE sp_valorAleatorio @timeid bigint 
 AS
    SELECT TOP 1 mensagem
    FROM tb_curiosidades
@@ -24,14 +24,40 @@ AS
    ORDER BY NEWID()
 GO
 
+CREATE PROCEDURE sp_verificaTabela @valido BIT output
+AS
+	IF EXISTS (SELECT * FROM tb_curiosidades)
+	BEGIN
+		SET @valido = 1
+	END
+	ELSE
+	BEGIN
+		SET @valido = 0
+	END
+GO
+
+CREATE PROCEDURE sp_validar_admin @login VARCHAR(50), @senha VARCHAR(50), @valido BIT OUTPUT
+AS
+	IF @login = 'admin' AND @senha = 'Jej-W+q%'
+	BEGIN
+		SET @valido = 1
+	END
+	ELSE
+	BEGIN
+		SET @valido = 0
+	END
+GO
+
 
 Create trigger t_insereHist on tb_curiosidades
 FOR INSERT
 AS
 BEGIN
-
+	DECLARE @curiosidadeid bigint
+	SELECT @curiosidadeid = id from inserted
+	INSERT INTO tb_historico_curiosidade (data_hora_exibicao, curiosidade_id) VALUES (GETDATE(), @curiosidadeid)
 END
-Go
+GO
 
 Create trigger t_modificaUltimaHist on tb_historico_curiosidade
 For INSERT
