@@ -3,6 +3,7 @@ package br.edu.fatecl.av2labbd.av2_labbd.service;
 import br.edu.fatecl.av2labbd.av2_labbd.dto.CandidatoDTO;
 import br.edu.fatecl.av2labbd.av2_labbd.model.Candidato;
 import br.edu.fatecl.av2labbd.av2_labbd.repository.CandidatoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class CandidatoService {
     @Autowired
     private CandidatoRepository candidatoRepository;
 
+    @Transactional
     public String inserirCandidato(CandidatoDTO dto) {
 
         Candidato candidato = new Candidato();
@@ -40,6 +42,7 @@ public class CandidatoService {
 
     }
 
+    @Transactional
     public String modificarCandidato(CandidatoDTO dto) {
 
         Candidato candidato = candidatoRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Candidato não encontrado"));
@@ -56,6 +59,7 @@ public class CandidatoService {
 
     }
 
+    @Transactional
     public String deletarCandidato(Long codigo) {
 
         candidatoRepository.deleteById(codigo);
@@ -93,7 +97,7 @@ public class CandidatoService {
 
     public List<CandidatoDTO> listarCandidatosPorBairro(String bairro) {
 
-        List<Candidato> lista = candidatoRepository.listarCandidatosPorBairro(bairro);
+        List<Candidato> lista = candidatoRepository.findByBairro(bairro);
         List<CandidatoDTO> resposta = new ArrayList<>();
 
         for (Candidato i : lista) {

@@ -3,6 +3,7 @@ package br.edu.fatecl.av2labbd.av2_labbd.service;
 import br.edu.fatecl.av2labbd.av2_labbd.dto.CursoDTO;
 import br.edu.fatecl.av2labbd.av2_labbd.model.Curso;
 import br.edu.fatecl.av2labbd.av2_labbd.repository.CursoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ public class CursoService {
     @Autowired
     private CursoRepository cursoRepository;
 
+    @Transactional
     public String criarCurso(CursoDTO dto) {
 
         Curso curso = new Curso();
@@ -35,6 +37,7 @@ public class CursoService {
 
     }
 
+    @Transactional
     public String atualizarCurso(CursoDTO dto) {
 
         Curso curso = cursoRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Curso não encontrado"));
@@ -47,6 +50,7 @@ public class CursoService {
 
     }
 
+    @Transactional
     public String deletarCurso(Long codigo) {
 
         cursoRepository.deleteById(codigo);
