@@ -1,6 +1,7 @@
 package br.edu.fatecl.av2labbd.av2_labbd.service;
 
 import br.edu.fatecl.av2labbd.av2_labbd.dto.CandidatoDTO;
+import br.edu.fatecl.av2labbd.av2_labbd.dto.CuriosidadeDTO;
 import br.edu.fatecl.av2labbd.av2_labbd.repository.IAdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class AdminService {
     private IAdminRepository adminRepository;
 
     @Autowired
+    private CuriosidadeService curiosidadeService;
+
+    @Autowired
     private CandidatoService candidatoService;
 
     public void autenticar(String login, String senha) {
@@ -21,6 +25,30 @@ public class AdminService {
         if (!adminRepository.isAutenticado(login, senha)) {
             throw new RuntimeException("Login ou senha inválidos");
         }
+
+    }
+
+    public String cadastrarMensagem(CuriosidadeDTO mensagem) {
+
+        return curiosidadeService.criarCuriosidade(mensagem);
+
+    }
+
+    public String modificarMensagem(CuriosidadeDTO mensagem) {
+
+        return curiosidadeService.atualizarCuriosidade(mensagem);
+
+    }
+
+    public CuriosidadeDTO buscarMensagemPorId(Long codigo) {
+
+        return curiosidadeService.buscarCuriosidadePorId(codigo);
+
+    }
+
+    public List<CuriosidadeDTO> listarMensagens() {
+
+        return curiosidadeService.listarTodasCuriosidades();
 
     }
 
