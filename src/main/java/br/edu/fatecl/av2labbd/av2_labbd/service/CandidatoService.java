@@ -77,41 +77,83 @@ public class CandidatoService {
         return resposta;
 
     }
-//    TODO
-//    public List<Candidato> listarCandidatosPorCurso() {
-//
-//        return List < Candidato >;
-//
-//    }
-//
-//    public List<Candidato> listarCandidatosPorBairro() {
-//
-//        return List < Candidato >;
-//
-//    }
-//
-//    public List<Candidato> listarCandidatosOrdenadosPorCurso() {
-//
-//        return List < Candidato >;
-//
-//    }
-//
-//    public List<Candidato> listarCandidatosOrdenadosPorBairro() {
-//
-//        return List < Candidato >;
-//
-//    }
-//
-//    public List<Candidato> listar10PrimeirosCandidatos() {
-//
-//        return List < Candidato >;
-//
-//    }
-//
-//    public List<Candidato> listar10UltimosCandidatos() {
-//
-//        return List < Candidato >;
-//
-//    }
+
+    public List<CandidatoDTO> listarCandidatosPorCurso(String curso) {
+
+        List<Candidato> lista = candidatoRepository.listarCandidatosPorCurso(curso);
+        List<CandidatoDTO> resposta = new ArrayList<>();
+
+        for (Candidato i : lista) {
+            resposta.add(new CandidatoDTO(i.getId(), i.getNome(), i.getEmail(), i.getTelefone(), i.getBairro(), i.getCursoInteresse(), i.getDataHoraCadastro()));
+        }
+
+        return resposta;
+
+    }
+
+    public List<CandidatoDTO> listarCandidatosPorBairro(String bairro) {
+
+        List<Candidato> lista = candidatoRepository.listarCandidatosPorBairro(bairro);
+        List<CandidatoDTO> resposta = new ArrayList<>();
+
+        for (Candidato i : lista) {
+            resposta.add(new CandidatoDTO(i.getId(), i.getNome(), i.getEmail(), i.getTelefone(), i.getBairro(), i.getCursoInteresse(), i.getDataHoraCadastro()));
+        }
+
+        return resposta;
+
+    }
+
+    public List<CandidatoDTO> listarCandidatosOrdenadosPorCurso() {
+
+        List<Candidato> lista = candidatoRepository.listarCandidatosOrdenadosPorCurso();
+        List<CandidatoDTO> resposta = new ArrayList<>();
+
+        for (Candidato i : lista) {
+            resposta.add(new CandidatoDTO(i.getId(), i.getNome(), i.getEmail(), i.getTelefone(), i.getBairro(), i.getCursoInteresse(), i.getDataHoraCadastro()));
+        }
+
+        return resposta;
+
+    }
+
+    public List<CandidatoDTO> listarCandidatosOrdenadosPorBairro() {
+
+        List<Candidato> lista = candidatoRepository.listarCandidatosOrdenadosPorBairro();
+        List<CandidatoDTO> resposta = new ArrayList<>();
+
+        for (Candidato i : lista) {
+            resposta.add(new CandidatoDTO(i.getId(), i.getNome(), i.getEmail(), i.getTelefone(), i.getBairro(), i.getCursoInteresse(), i.getDataHoraCadastro()));
+        }
+
+        return resposta;
+
+    }
+
+    public List<CandidatoDTO> listar10PrimeirosCandidatos() {
+
+        List<Candidato> lista = candidatoRepository.listar10PrimeirosCandidatos();
+        List<CandidatoDTO> resposta = new ArrayList<>();
+
+        for (Candidato i : lista) {
+            resposta.add(new CandidatoDTO(i.getId(), i.getNome(), i.getEmail(), i.getTelefone(), i.getBairro(), i.getCursoInteresse(), i.getDataHoraCadastro()));
+        }
+
+        return resposta;
+
+    }
+
+    public List<CandidatoDTO> listar10UltimosCandidatos() {
+
+        List<Candidato> lista = candidatoRepository.listar10UltimosCandidatos();
+        List<CandidatoDTO> resposta = new ArrayList<>();
+
+        for (Candidato i : lista) {
+            resposta.add(new CandidatoDTO(i.getId(), i.getNome(), i.getEmail(), i.getTelefone(), i.getBairro(), i.getCursoInteresse(), i.getDataHoraCadastro()));
+        }
+
+        return resposta;
+
+    }
 
 }
