@@ -1,34 +1,71 @@
 package br.edu.fatecl.av2labbd.av2_labbd.service;
 
+import br.edu.fatecl.av2labbd.av2_labbd.dto.TimeDTO;
+import br.edu.fatecl.av2labbd.av2_labbd.model.Time;
 import br.edu.fatecl.av2labbd.av2_labbd.repository.TimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class TimeService {
 
     @Autowired
-    TimeRepository timeRepository;
+    private TimeRepository timeRepository;
+    
+    public String criarTime(TimeDTO dto) {
 
-    public void criarTime() {
-        //TODO
+        Time time = new Time();
+
+        time.setNome(dto.getNome());
+
+        timeRepository.save(time);
+
+        return "Time Criado com Sucesso";
+
     }
 
-    public void buscarTimePorId() {
-        //TODO
+    public TimeDTO buscarTimePorId(Long codigo) {
+
+        Time time = timeRepository.findById(codigo).orElseThrow(() -> new RuntimeException("Time não encontrado"));
+
+        return new TimeDTO(codigo, time.getNome());
+
     }
 
+    public String atualizarTime(TimeDTO dto) {
 
-    public void atualizarTime() {
-        //TODO
+        Time time = timeRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Time não encontrado"));
+
+        if (dto.getNome() != null) time.setNome(dto.getNome());
+
+        timeRepository.save(time);
+
+        return "Time Atualizado com Sucesso";
+
     }
 
-    public void deletarTime() {
-        //TODO
+    public String deletarTime(Long codigo) {
+
+        timeRepository.deleteById(codigo);
+
+        return "Time Deletado com Sucesso";
+
     }
 
-    public void listarTodosTimes() {
-        //TODO
+    public List<TimeDTO> listarTodosTimes() {
+
+        List<Time> listaEntidades = timeRepository.findAll();
+        List<TimeDTO> resposta = new ArrayList<>();
+
+        for (Time i : listaEntidades) {
+            resposta.add(new TimeDTO(i.getId(), i.getNome()));
+        }
+
+        return resposta;
+
     }
 
 }

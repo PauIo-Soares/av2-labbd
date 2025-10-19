@@ -12,11 +12,11 @@ public class Curiosidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String mensagem;
+
     @ManyToOne
     @JoinColumn(name = "time_id", nullable = false)
     private Time time;
-
-    @Column(nullable = false)
-    private String mensagem;
 
 }
