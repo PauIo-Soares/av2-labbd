@@ -16,6 +16,14 @@ BEGIN
 END
 GO
 
+Create procedure sp_insereCurso @nomeCurso VARCHAR(100), @saida VARCHAR(200) output
+AS
+	Insert into tb_cursos (nome) VALUES (@nomeCurso)
+	SET @saida = 'Curso inserido com sucesso!'
+	PRINT(@saida)
+GO
+
+
 CREATE PROCEDURE sp_valorAleatorio @timeid bigint 
 AS
    SELECT TOP 1 mensagem
