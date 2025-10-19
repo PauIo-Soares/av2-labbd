@@ -12,7 +12,7 @@ public class AdminRepository implements IAdminRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public boolean validarLogin(String login, String senha) {
+    public boolean isAutenticado(String login, String senha) {
 
         return jdbcTemplate.execute("{call sp_validar_admin(?, ?, ?)}", (CallableStatementCallback<Boolean>) cs -> {
 
