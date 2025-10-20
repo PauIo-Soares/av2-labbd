@@ -144,7 +144,6 @@ public class CuriosidadeService {
         File arquivo = ResourceUtils.getFile("classpath:txts/" + nomeArquivo);
         List<String> linhas = Files.readAllLines(arquivo.toPath());
 
-        // Salva cada curiosidade
         for (String linha : linhas) {
             if (!linha.trim().isEmpty()) {
                 Curiosidade curiosidade = new Curiosidade();
