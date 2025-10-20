@@ -67,29 +67,17 @@ public class AdminController {
 
     }
 
-//    @GetMapping("/consultaCandidatos")
-//    public String consultaCandidatos(Model model) {
-//
-//        model.addAttribute("filtro", new CandidatoDTO());
-//        model.addAttribute("cursos", cursoService.listarTodosCursos());
-//        model.addAttribute("bairros", candidatoService.listarBairrosDistintos());
-//
-//        return "consultaCandidatos";
-//
-//    }
-
     @GetMapping("/consultaCandidatos")
     public String consultaCandidatos(Model model) {
 
         model.addAttribute("candidatos", candidatoService.listarTodosCandidatos());
         model.addAttribute("cursos", cursoService.listarTodosCursos());
-        model.addAttribute("bairros", candidatoService.listarBairrosDistintos()); // se tiver o filtro por bairro
+        model.addAttribute("bairros", candidatoService.listarBairrosDistintos());
 
-        return "consultaCandidatos"; // nome do template Thymeleaf
+        return "consultaCandidatos";
+
     }
 
-
-    // TODO tirar metodo filtrar
     @PostMapping("/cadastra-mensagem")
     public String handleAction(@ModelAttribute("curiosidade") CuriosidadeDTO curiosidade, @RequestParam("action") String action, Model model) {
 
@@ -109,14 +97,6 @@ public class AdminController {
 
                 case "listar":
                     lista = curiosidadeService.listarTodasCuriosidades();
-                    break;
-
-                case "filtrar":
-                    if (curiosidade.getTime() != null && curiosidade.getTime().getId() != null) {
-                        lista = curiosidadeService.listarCuriosidadesPorTime(curiosidade.getTime().getId());
-                    } else {
-                        lista = curiosidadeService.listarTodasCuriosidades();
-                    }
                     break;
 
                 default:
@@ -145,14 +125,17 @@ public class AdminController {
 
     }
 
-    // TODO resolver
     @PostMapping("/cadastra-mensagem/filtrar")
     public String filtrarMensagens(@RequestParam Long timeId, Model model) {
-        List<CuriosidadeDTO> mensagens = curiosidadeService.listarCuriosidadesPorTime(timeId);
-        model.addAttribute("mensagens", mensagens);
-        return "cadastraTipo";
-    }
 
+        List<CuriosidadeDTO> curiosidadesFiltradas = curiosidadeService.listarCuriosidadesPorTime(timeId);
+        model.addAttribute("curiosidade", new CuriosidadeDTO());
+        model.addAttribute("curiosidades", curiosidadesFiltradas);
+        model.addAttribute("times", timeService.listarTodosTimes());
+
+        return "cadastraTipo";
+
+    }
 
     @GetMapping("/candidatos/curso")
     public String consultarCandidatosPorCurso(@RequestParam("cursoId") Long curso, Model model) {

@@ -104,7 +104,6 @@ public class CuriosidadeService {
 
     }
 
-    // TODO Ver se está correto
     @Transactional
     private void popularTxt() {
 
@@ -114,7 +113,7 @@ public class CuriosidadeService {
             popularCuriosidades("Corinthians", "corinthians.txt");
             popularCuriosidades("Palmeiras", "palmeiras.txt");
             popularCuriosidades("Santos", "santos.txt");
-            popularCuriosidades("São Paulo", "saopaulo.txt");
+            popularCuriosidades("Sao Paulo", "saopaulo.txt");
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao popular tabelas: " + e.getMessage());
@@ -122,7 +121,6 @@ public class CuriosidadeService {
 
     }
 
-    // TODO Ver se tá correto
     private void popularTimes() throws IOException {
 
         File arquivo = ResourceUtils.getFile("classpath:txts/times.txt");
@@ -138,8 +136,6 @@ public class CuriosidadeService {
 
     }
 
-    // Popula as curiosidades de um time específico
-    // TODO Ver se está correto
     private void popularCuriosidades(String nomeTime, String nomeArquivo) throws IOException {
 
         Time time = timeService.findByNome(nomeTime);
@@ -148,7 +144,6 @@ public class CuriosidadeService {
         File arquivo = ResourceUtils.getFile("classpath:txts/" + nomeArquivo);
         List<String> linhas = Files.readAllLines(arquivo.toPath());
 
-        // Salva cada curiosidade
         for (String linha : linhas) {
             if (!linha.trim().isEmpty()) {
                 Curiosidade curiosidade = new Curiosidade();
@@ -169,28 +164,6 @@ public class CuriosidadeService {
 
         return dto;
 
-    }
-
-    // TODO Ver se está correto
-    private void cadastrarMensagemTxt(String mensagem, String nomeTime) {
-
-        try {
-            String nomeArquivo = nomeTime + ".txt";
-
-            File arquivo = ResourceUtils.getFile("classpath:txts/" + nomeArquivo);
-
-            FileWriter fw = new FileWriter(arquivo, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            bw.newLine();
-            bw.write(mensagem);
-
-            bw.close();
-            fw.close();
-
-        } catch (Exception e) {
-            System.err.println("Aviso: Não foi possível cadastrar mensagem no TXT: " + e.getMessage());
-        }
     }
 
 }
