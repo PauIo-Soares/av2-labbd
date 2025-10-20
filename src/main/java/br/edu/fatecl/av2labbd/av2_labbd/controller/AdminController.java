@@ -57,15 +57,18 @@ public class AdminController {
     }
 
     @GetMapping("/cadastra-mensagem")
-    public String cadastraTipo() {
-        // colocar na model a lista de curiosidades, times, etc
+    public String cadastraTipo(Model model) {
+
+        model.addAttribute("curiosidade", new CuriosidadeDTO());
+        model.addAttribute("curiosidades", curiosidadeService.listarTodasCuriosidades());
+        model.addAttribute("times", timeService.listarTodosTimes());
         return "cadastraTipo";
 
     }
 
     @GetMapping("/consulta-candidatos")
     public String consultaCandidatos() {
-        // colocar na model as listas de cursos e bairros para os filtros
+        // TODO colocar na model as listas de cursos e bairros para os filtros
         return "consultaCandidatos";
 
     }
@@ -100,6 +103,14 @@ public class AdminController {
                     lista = curiosidadeService.listarTodasCuriosidades();
                     break;
 
+                case "filtrar":
+                    if (curiosidade.getTime() != null && curiosidade.getTime().getId() != null) {
+                        lista = curiosidadeService.listarCuriosidadesPorTime(curiosidade.getTime().getId());
+                    } else {
+                        lista = curiosidadeService.listarTodasCuriosidades();
+                    }
+                    break;
+
                 default:
                     saida = "Ação desconhecida.";
                     break;
@@ -123,6 +134,7 @@ public class AdminController {
         }
 
         return "cadastraTipo";
+
     }
 
     @GetMapping("/candidatos/curso")

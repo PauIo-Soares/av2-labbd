@@ -1,10 +1,10 @@
 package br.edu.fatecl.av2labbd.av2_labbd.service;
 
 import br.edu.fatecl.av2labbd.av2_labbd.dto.CuriosidadeDTO;
+import br.edu.fatecl.av2labbd.av2_labbd.dto.TimeDTO;
 import br.edu.fatecl.av2labbd.av2_labbd.model.Curiosidade;
 import br.edu.fatecl.av2labbd.av2_labbd.model.Time;
 import br.edu.fatecl.av2labbd.av2_labbd.repository.CuriosidadeRepository;
-import br.edu.fatecl.av2labbd.av2_labbd.repository.TimeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class CuriosidadeService {
     private CuriosidadeRepository curiosidadeRepository;
 
     @Autowired
-    private TimeRepository timeRepository;
+    private TimeService timeService;
 
     @Transactional
     public String criarCuriosidade(CuriosidadeDTO dto) {
@@ -83,12 +83,8 @@ public class CuriosidadeService {
 
     }
 
-
-    // Não sei pra que preciso dessa
-    // É um tchan a mais, acho q vou deixar
-    // Criar o findByTimeId
-    // TODO
     public List<CuriosidadeDTO> listarCuriosidadesPorTime(Long timeId) {
+
         List<Curiosidade> lista = curiosidadeRepository.findByTimeId(timeId);
         List<CuriosidadeDTO> resposta = new ArrayList<>();
 
@@ -97,18 +93,18 @@ public class CuriosidadeService {
         }
 
         return resposta;
+
     }
 
-    // Nao deveria ser private?
     public void validarTabelasPopuladas() {
 
-        long countTimes = timeRepository.count();
+        long countTimes = timeService.count();
 
         if (countTimes == 0) popularTxt();
 
     }
 
-    // Ver se está correto
+    // TODO Ver se está correto
     @Transactional
     private void popularTxt() {
 
@@ -126,6 +122,7 @@ public class CuriosidadeService {
 
     }
 
+    // TODO Ver se tá correto
     private void popularTimes() throws IOException {
 
         File arquivo = ResourceUtils.getFile("classpath:txts/times.txt");
@@ -133,20 +130,19 @@ public class CuriosidadeService {
 
         for (String linha : linhas) {
             if (!linha.trim().isEmpty()) {
-                Time time = new Time();
+                TimeDTO time = new TimeDTO();
                 time.setNome(linha.trim());
-                timeRepository.save(time);
+                timeService.criarTime(time);
             }
         }
 
     }
 
-
     // Popula as curiosidades de um time específico
-    // Ver se está correto
+    // TODO Ver se está correto
     private void popularCuriosidades(String nomeTime, String nomeArquivo) throws IOException {
 
-        Time time = timeRepository.findByNome(nomeTime); // Teria que implementar no Repo
+        Time time = timeService.findByNome(nomeTime);
         if (time == null) throw new RuntimeException("Time " + nomeTime + " não encontrado");
 
         File arquivo = ResourceUtils.getFile("classpath:txts/" + nomeArquivo);
@@ -175,8 +171,7 @@ public class CuriosidadeService {
 
     }
 
-
-    // Ver se está correto
+    // TODO Ver se está correto
     private void cadastrarMensagemTxt(String mensagem, String nomeTime) {
 
         try {

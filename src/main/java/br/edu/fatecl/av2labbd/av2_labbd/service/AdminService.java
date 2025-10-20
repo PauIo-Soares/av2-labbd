@@ -88,10 +88,10 @@ public class AdminService {
 
     }
 
-
-    // Talvez use no Front, verificar
     public List<String> listarBairrosDistintos() {
-        return candidatoService.findDistinctBairros(); // Preciso implementar na Service e no Repo
+
+        return candidatoService.listarBairrosDistintos();
+
     }
 
 }

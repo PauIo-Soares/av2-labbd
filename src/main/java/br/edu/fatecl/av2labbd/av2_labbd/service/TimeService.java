@@ -14,7 +14,7 @@ public class TimeService {
 
     @Autowired
     private TimeRepository timeRepository;
-    
+
     public String criarTime(TimeDTO dto) {
 
         Time time = new Time();
@@ -65,6 +65,18 @@ public class TimeService {
         }
 
         return resposta;
+
+    }
+
+    public long count() {
+
+        return timeRepository.count();
+
+    }
+
+    public Time findByNome(String nomeTime) {
+
+        return timeRepository.findByNome(nomeTime);
 
     }
 

@@ -27,7 +27,7 @@
             <div class="form-container fade-in mb-4">
                 <h3 th:text="${curiosidade.id != null ? 'Editar Curiosidade' : 'Nova Curiosidade'}">Nova
                     Curiosidade</h3>
-                <form th:action="@{/admin/cadastra-mensagem}" th:object="${admin}" method="post">
+                <form th:action="@{/admin/cadastra-mensagem}" th:object="${curiosidade}" method="post">
                     <!-- ID oculto (para edição) -->
                     <input type="hidden" th:field="*{id}">
                     <!-- Selecionar Time -->
@@ -59,7 +59,7 @@
                     </div>
                     <!-- Botões -->
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" name="action" value="Cadastrar" class="btn btn-primary">
                             <span th:text="${curiosidade.id != null ? 'Atualizar' : 'Cadastrar'}">Cadastrar</span>
                         </button>
                         <a th:href="@{/admin/cadastra-mensagem}" class="btn btn-secondary">
@@ -88,7 +88,7 @@
                         </select>
                     </div>
                     <div class="col-md-6 d-flex align-items-end">
-                        <button type="submit" class="btn btn-info me-2">Filtrar</button>
+                        <button type="submit" name="action" value="Filtrar" class="btn btn-info me-2">Filtrar</button>
                         <a th:href="@{/admin/cadastra-mensagem}" class="btn btn-outline-secondary">Limpar Filtro</a>
                     </div>
                 </form>

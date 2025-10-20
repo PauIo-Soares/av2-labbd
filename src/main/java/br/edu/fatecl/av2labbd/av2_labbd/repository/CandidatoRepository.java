@@ -28,4 +28,7 @@ public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
     @Query(value = "Select TOP 10 * from tb_candidatos ORDER BY id DESC", nativeQuery = true)
     List<Candidato> listar10UltimosCandidatos();
 
+    @Query("SELECT DISTINCT c.bairro FROM Candidato c")
+    List<String> findDistinctBairros();
+
 }

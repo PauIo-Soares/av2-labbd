@@ -33,7 +33,7 @@ public class CandidatoController {
 
     }
 
-    // Arrumar
+    // TODO Arrumar
     @PostMapping("/cadastro")
     public String cadastrarCandidato(@ModelAttribute CandidatoDTO candidato, Model model) {
 

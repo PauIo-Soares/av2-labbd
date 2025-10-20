@@ -160,4 +160,10 @@ public class CandidatoService {
 
     }
 
+    public List<String> listarBairrosDistintos() {
+
+        return candidatoRepository.findDistinctBairros();
+
+    }
+
 }
