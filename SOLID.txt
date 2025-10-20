@@ -1,1 +1,16 @@
-SOLID
+Aplicação dos Princípios SOLID no Projeto
+
+S – Princípio da Responsabilidade Única
+Cada classe do projeto foi projetada para ter uma única responsabilidade bem definida. Por exemplo, as classes model/entity armazenam apenas os dados das entidades (como Candidato, Curiosidade e Time), os repositories cuidam exclusivamente da persistência no banco de dados, os services concentram as regras de negócio (como validações e filtros de curiosidades por time), e os controllers atuam apenas como interface entre a camada de view e a camada de serviço, recebendo requisições e retornando respostas apropriadas.
+
+O – Princípio Aberto/Fechado
+As classes estão abertas para extensão e fechadas para modificação. Por exemplo, caso seja necessário adicionar novos tipos de filtragem ou novos atributos nas entidades, é possível estender as classes ou criar métodos adicionais nos serviços sem alterar o código já existente, mantendo o sistema estável e fácil de evoluir.
+
+L – Princípio da Substituição de Liskov
+A hierarquia de herança foi respeitada. Por exemplo, caso existam diferentes tipos de entidades ou DTOs que compartilhem uma superclasse ou interface, qualquer instância das subclasses pode ser usada no lugar da classe genérica sem comprometer o funcionamento do sistema, garantindo polimorfismo seguro e consistência na aplicação.
+
+I – Princípio da Segregação de Interfaces
+O projeto respeita a segregação de interfaces ao manter interfaces e repositories específicas para cada entidade. Cada repository expõe apenas os métodos relevantes para a sua respectiva entidade, evitando que classes sejam obrigadas a implementar métodos desnecessários. Da mesma forma, os DTOs e serviços lidam apenas com os atributos e comportamentos que realmente fazem sentido para cada caso de uso.
+
+D – Princípio da Inversão de Dependência
+O projeto aplica a inversão de dependência utilizando injeção de dependência do Spring (@Autowired). Os controllers dependem de abstrações (interfaces e serviços), não de implementações concretas, o que facilita testes, manutenção e a substituição de componentes quando necessário, tornando o código mais modular e flexível.
