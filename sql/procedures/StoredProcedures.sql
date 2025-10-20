@@ -24,9 +24,20 @@ AS
 GO
 
 
-CREATE PROCEDURE sp_valorAleatorio @timeid bigint 
+/*
+CREATE PROCEDURE sp_valorAleatorio @timeid bigint
 AS
-   SELECT TOP 1 mensagem
+   Select TOP 1 mensagem
+   FROM tb_curiosidades
+   where time_id = @timeid
+   ORDER BY NEWID()
+GO
+*/
+
+
+CREATE PROCEDURE sp_valorAleatorio @timeid bigint, @saida VARCHAR(200) OUTPUT
+AS
+   Select TOP 1 @saida = mensagem
    FROM tb_curiosidades
    where time_id = @timeid
    ORDER BY NEWID()
@@ -87,10 +98,10 @@ BEGIN
 		from tb_historico_curiosidade hist
 		INNER JOIN tb_curiosidades cr ON hist.curiosidade_id = cr.id
 		where cr.time_id = @timeid
-		ORDER BY hist.data_hora_exibicao ASC
+		ORDER BY hist.id ASC
 		
 		UPDATE tb_historico_curiosidade
-		SET id = @id, data_hora_exibicao = @datahora, curiosidade_id = @curiosidadeID
+		SET data_hora_exibicao = @datahora, curiosidade_id = @curiosidadeID
 		where id = @idAntigo
 
 		DELETE FROM tb_historico_curiosidade
