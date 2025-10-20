@@ -68,7 +68,7 @@
                     <a th:href="@{/admin/candidatos/ultimos}" class="btn btn-success">
                         10 Últimos Cadastrados
                     </a>
-                    <a th:href="@{/admin/consulta-candidatos}" class="btn btn-secondary">
+                    <a th:href="@{/admin/consultaCandidatos}" class="btn btn-secondary">
                         Limpar Consulta
                     </a>
                 </div>
@@ -118,11 +118,11 @@
                             <td th:text="${candidato.bairro}">Bairro</td>
                             <td>
                                     <span class="badge bg-info"
-                                          th:text="${candidato.curso.nome}">
+                                          th:text="${candidato.cursoInteresse.nome}">
                                         Curso
                                     </span>
                             </td>
-                            <td th:text="${#temporals.format(candidato.dataCadastro, 'dd/MM/yyyy HH:mm')}">
+                            <td th:text="${#temporals.format(candidato.dataHoraCadastro, 'dd/MM/yyyy HH:mm')}">
                                 01/01/2024 10:00
                             </td>
                         </tr>
@@ -131,7 +131,7 @@
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a th:href="@{/adminMenu}" class="btn btn-secondary btn-lg">
+                <a th:href="@{/admin/menu}" class="btn btn-secondary btn-lg">
                     ← Voltar ao Menu Administrativo
                 </a>
             </div>

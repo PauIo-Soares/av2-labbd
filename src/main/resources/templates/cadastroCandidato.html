@@ -23,7 +23,7 @@
                 <div th:if="${erro}" class="alert alert-danger" role="alert">
                     <strong>Erro:</strong> <span th:text="${erro}">Mensagem de erro</span>
                 </div>
-                <form th:action="@{/cadastroCandidato}" th:object="${candidato}" method="post">
+                <form th:action="@{/candidato/cadastro}" th:object="${candidato}" method="post">
                     <div class="form-group mb-3">
                         <label for="nome" class="form-label">Nome Completo *</label>
                         <input type="text"
@@ -65,7 +65,7 @@
                         <label for="curso" class="form-label">Curso de Interesse *</label>
                         <select class="form-control"
                                 id="curso"
-                                th:field="*{curso.id}"
+                                th:field="*{cursoInteresse.id}"
                                 required>
                             <option value="">Selecione um curso</option>
                             <option th:each="curso : ${cursos}"

@@ -82,9 +82,9 @@ public class CandidatoService {
 
     }
 
-    public List<CandidatoDTO> listarCandidatosPorCurso(String curso) {
+    public List<CandidatoDTO> listarCandidatosPorCurso(Long curso) {
 
-        List<Candidato> lista = candidatoRepository.listarCandidatosPorCurso(curso);
+        List<Candidato> lista = candidatoRepository.listarCandidatosPorCursoId(curso);
         List<CandidatoDTO> resposta = new ArrayList<>();
 
         for (Candidato i : lista) {

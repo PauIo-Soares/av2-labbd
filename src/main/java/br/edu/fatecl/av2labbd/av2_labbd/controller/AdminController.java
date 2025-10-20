@@ -2,10 +2,7 @@ package br.edu.fatecl.av2labbd.av2_labbd.controller;
 
 import br.edu.fatecl.av2labbd.av2_labbd.dto.CandidatoDTO;
 import br.edu.fatecl.av2labbd.av2_labbd.dto.CuriosidadeDTO;
-import br.edu.fatecl.av2labbd.av2_labbd.service.AdminService;
-import br.edu.fatecl.av2labbd.av2_labbd.service.CuriosidadeService;
-import br.edu.fatecl.av2labbd.av2_labbd.service.CursoService;
-import br.edu.fatecl.av2labbd.av2_labbd.service.TimeService;
+import br.edu.fatecl.av2labbd.av2_labbd.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +25,9 @@ public class AdminController {
 
     @Autowired
     private CursoService cursoService;
+
+    @Autowired
+    private CandidatoService candidatoService;
 
     @GetMapping("/login")
     public String loginForm() {
@@ -56,23 +56,40 @@ public class AdminController {
 
     }
 
-    @GetMapping("/cadastra-mensagem")
+    @GetMapping("/cadastraTipo")
     public String cadastraTipo(Model model) {
 
         model.addAttribute("curiosidade", new CuriosidadeDTO());
         model.addAttribute("curiosidades", curiosidadeService.listarTodasCuriosidades());
         model.addAttribute("times", timeService.listarTodosTimes());
+
         return "cadastraTipo";
 
     }
 
-    @GetMapping("/consulta-candidatos")
-    public String consultaCandidatos() {
-        // TODO colocar na model as listas de cursos e bairros para os filtros
-        return "consultaCandidatos";
+//    @GetMapping("/consultaCandidatos")
+//    public String consultaCandidatos(Model model) {
+//
+//        model.addAttribute("filtro", new CandidatoDTO());
+//        model.addAttribute("cursos", cursoService.listarTodosCursos());
+//        model.addAttribute("bairros", candidatoService.listarBairrosDistintos());
+//
+//        return "consultaCandidatos";
+//
+//    }
 
+    @GetMapping("/consultaCandidatos")
+    public String consultaCandidatos(Model model) {
+
+        model.addAttribute("candidatos", candidatoService.listarTodosCandidatos());
+        model.addAttribute("cursos", cursoService.listarTodosCursos());
+        model.addAttribute("bairros", candidatoService.listarBairrosDistintos()); // se tiver o filtro por bairro
+
+        return "consultaCandidatos"; // nome do template Thymeleaf
     }
 
+
+    // TODO tirar metodo filtrar
     @PostMapping("/cadastra-mensagem")
     public String handleAction(@ModelAttribute("curiosidade") CuriosidadeDTO curiosidade, @RequestParam("action") String action, Model model) {
 
@@ -86,17 +103,8 @@ public class AdminController {
                     saida = curiosidadeService.criarCuriosidade(curiosidade);
                     break;
 
-                case "buscar":
-                    CuriosidadeDTO encontrada = curiosidadeService.buscarCuriosidadePorId(curiosidade.getId());
-                    model.addAttribute("curiosidade", encontrada);
-                    break;
-
                 case "atualizar":
                     saida = curiosidadeService.atualizarCuriosidade(curiosidade);
-                    break;
-
-                case "excluir":
-                    saida = curiosidadeService.deletarCuriosidade(curiosidade.getId());
                     break;
 
                 case "listar":
@@ -137,8 +145,17 @@ public class AdminController {
 
     }
 
+    // TODO resolver
+    @PostMapping("/cadastra-mensagem/filtrar")
+    public String filtrarMensagens(@RequestParam Long timeId, Model model) {
+        List<CuriosidadeDTO> mensagens = curiosidadeService.listarCuriosidadesPorTime(timeId);
+        model.addAttribute("mensagens", mensagens);
+        return "cadastraTipo";
+    }
+
+
     @GetMapping("/candidatos/curso")
-    public String consultarCandidatosPorCurso(@RequestParam String curso, Model model) {
+    public String consultarCandidatosPorCurso(@RequestParam("cursoId") Long curso, Model model) {
 
         try {
             List<CandidatoDTO> candidatos = adminService.listarCandidatosPorCurso(curso);

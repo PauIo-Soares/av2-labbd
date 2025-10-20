@@ -52,7 +52,7 @@ public class AdminService {
 
     }
 
-    public List<CandidatoDTO> listarCandidatosPorCurso(String curso) {
+    public List<CandidatoDTO> listarCandidatosPorCurso(Long curso) {
 
         return candidatoService.listarCandidatosPorCurso(curso);
 

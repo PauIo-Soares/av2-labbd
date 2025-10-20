@@ -11,8 +11,8 @@ import java.util.List;
 @Repository
 public interface CandidatoRepository extends JpaRepository<Candidato, Long> {
 
-    @Query("Select c from Candidato c WHERE c.cursoInteresse.nome = :nomeCurso")
-    List<Candidato> listarCandidatosPorCurso(@Param("nomeCurso") String nomeCurso);
+    @Query("SELECT c FROM Candidato c WHERE c.cursoInteresse.id = :cursoId")
+    List<Candidato> listarCandidatosPorCursoId(@Param("cursoId") Long cursoId);
 
     List<Candidato> findByBairro(String bairro);
 
