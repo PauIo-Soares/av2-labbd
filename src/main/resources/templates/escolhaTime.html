@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha seu Time</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container-fluid py-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="text-center mb-5 fade-in">
+                <h1 class="display-3 fw-bold mb-3">⚽ Qual é o seu Time?</h1>
+                <p class="lead fs-4">Escolha seu time e descubra uma curiosidade especial!</p>
+            </div>
+            <div class="times-horizontal">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4 justify-content-center">
+                    <div class="col">
+                        <div class="time-card-vertical fade-in" onclick="window.location.href='/curiosidade/1'">
+                            <div class="time-image-container">
+                                <img src=""
+                                     th:src="@{/images/times/corinthians.jpg}"
+                                     alt="Corinthians"
+                                     class="time-image">
+                            </div>
+                            <div class="time-info">
+                                <h3 class="time-name">Corinthians</h3>
+                                <p class="time-subtitle">Sport Club Corinthians Paulista</p>
+                                <a th:href="@{'/curiosidade/' + 1}" class="btn btn-dark btn-escolher">
+                                    Escolher
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="time-card-vertical fade-in" onclick="window.location.href='/curiosidade/2'">
+                            <div class="time-image-container">
+                                <img src=""
+                                     th:src="@{/images/times/palmeiras.jpg}"
+                                     alt="Palmeiras"
+                                     class="time-image">
+                            </div>
+                            <div class="time-info">
+                                <h3 class="time-name">Palmeiras</h3>
+                                <p class="time-subtitle">Sociedade Esportiva Palmeiras</p>
+                                <a th:href="@{'/curiosidade/' + 2}" class="btn btn-dark btn-escolher">
+                                    Escolher
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="time-card-vertical fade-in" onclick="window.location.href='/curiosidade/3'">
+                            <div class="time-image-container">
+                                <img src=""
+                                     th:src="@{/images/times/santos.jpg}"
+                                     alt="Santos"
+                                     class="time-image">
+                            </div>
+                            <div class="time-info">
+                                <h3 class="time-name">Santos</h3>
+                                <p class="time-subtitle">Santos Futebol Clube</p>
+                                <a th:href="@{'/curiosidade/' + 3}" class="btn btn-dark btn-escolher">
+                                    Escolher
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="time-card-vertical fade-in" onclick="window.location.href='/curiosidade/4'">
+                            <div class="time-image-container">
+                                <img src=""
+                                     th:src="@{/images/times/saopaulo.jpg}"
+                                     alt="São Paulo"
+                                     class="time-image">
+                            </div>
+                            <div class="time-info">
+                                <h3 class="time-name">São Paulo</h3>
+                                <p class="time-subtitle">São Paulo Futebol Clube</p>
+                                <a th:href="@{'/curiosidade/' + 4}" class="btn btn-dark btn-escolher">
+                                    Escolher
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-5">
+                <a th:href="@{/}" class="btn btn-outline-secondary btn-lg">
+                    ← Voltar ao Início
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- 
+INSTRUÇÕES PARA AS IMAGENS DOS TIMES:
+
+Coloque 4 imagens RETANGULARES (formato vertical/retrato) em:
+- src/main/resources/static/images/times/corinthians.jpg
+- src/main/resources/static/images/times/palmeiras.jpg
+- src/main/resources/static/images/times/santos.jpg
+- src/main/resources/static/images/times/saopaulo.jpg
+
+Tamanho ideal: 400x600px (proporção 2:3)
+
+Sugestões de imagens:
+- Estádio do time
+- Torcida uniformizada
+- Jogador histórico
+- Momento de conquista
+- Vista do estádio
+- Mascote do time
+
+Formato: JPG (menor tamanho) ou PNG
+-->
