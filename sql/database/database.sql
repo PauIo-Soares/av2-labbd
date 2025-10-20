@@ -1,5 +1,0 @@
-CREATE DATABASE db_av2
-GO
-
-USE db_av2
-GO
